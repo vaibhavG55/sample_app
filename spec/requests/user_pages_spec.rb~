@@ -34,7 +34,7 @@ describe "UserPages" do
            fill_in "Name", with: "Vaibhav Gupta"
            fill_in "Email", with: "vaibhav.gupta.cse11@iitbhu.ac.in"
            fill_in "Password", with: "foobar"
-           fill_in "Confirmation", with: "foobar" 
+           fill_in "Password confirmation", with: "foobar" 
         end
         
         it "should create user" do
@@ -42,6 +42,29 @@ describe "UserPages" do
               click_button submit
            end.to change(User, :count).by(1)
         end
+        
+        describe "after saving the user" do
+           before { click_button submit }
+           let(:user) { User.find_by_email('user@example.com') }
+           it { should have_selector('title', text: user.name) }
+           it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+        end
      end
+     
+     describe "invalid user information" do
+        before do
+           fill_in "Name", with: "Vaibhav Gupta"
+           fill_in "Email", with: "vaibhav.gupta.cse11@iitbhu.ac.in"
+           fill_in "Password", with: "foobar"
+           fill_in "Password confirmation", with: "foo" 
+        end
+        
+        describe "after submission" do
+          before { click_button submit }
+          it { should have_selector('title', text: 'Sign Up') }
+          it { should have_content('error') }
+        end
+     end
+     
   end
 end
