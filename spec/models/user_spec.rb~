@@ -46,13 +46,13 @@ describe User do
    
    
    describe "when email format is valid" do
-     it "should be valid" do
+     
       addresses = %w[user@foo.COM A_US-ER@f.b.org frst.lst@foo.jp a+b@baz.cn]
       addresses.each do |valid_address|
        @user.email = valid_address
        @user.should be_valid
       end
-     end
+    
    end
    
    describe "when user is duplicate" do
@@ -110,6 +110,6 @@ describe User do
    
    describe "remember token" do
       before{@user.save}
-      its(:remember_token){should_not be_empty}
+      its(:remember_token){should_not be_blank}
    end
 end
